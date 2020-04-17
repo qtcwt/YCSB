@@ -84,6 +84,7 @@ DATABASES = {
     "infinispan"   : "site.ycsb.db.InfinispanClient",
     "jdbc"         : "site.ycsb.db.JdbcDBClient",
     "kudu"         : "site.ycsb.db.KuduYCSBClient",
+    "kvtracer"     : "site.ycsb.db.KVTracerClient",
     "memcached"    : "site.ycsb.db.MemcachedClient",
     "maprdb"       : "site.ycsb.db.mapr.MapRDBClient",
     "maprjsondb"   : "site.ycsb.db.mapr.MapRJSONDBClient",

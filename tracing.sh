@@ -1,21 +1,21 @@
 #!/bin/sh
 
-# mvn -pl kvtracer -am clean package
+mvn -pl kvtracer -am clean package
 TRACE_DIR="traces/"
 WORKLOAD_DIR="workloads/workload"
 WORKLOADS="a b"
-RECORD_AMOUNTS="100k 1m"
+AMT="1m"
 mkdir ${TRACE_DIR}
-for WL in $WORKLOADS
+mkdir ${TRACE_DIR}"/ycsb"
+mkdir ${TRACE_DIR}"/insert"
+for threads in 1 2 4 6 8 10 12 16 20 24 28 32 36 40
 do
-    for AMT in $RECORD_AMOUNTS
+    for WL in $WORKLOADS
     do
-        mkdir ${TRACE_DIR}"/"${AMT}
         WL_PATH=${WORKLOAD_DIR}${WL}"_"${AMT}
-        for threads in 1 2 4 6 10 16 20 24 32 40
-        do
-            ./bin/ycsb load kvtracer -P $WL_PATH -threads $threads -p "kvtracer.tracefile="${TRACE_DIR}"/"${AMT}"/"${WL}"-load" -p "kvtracer.totalthread="${threads}
-            ./bin/ycsb run kvtracer -P $WL_PATH -threads $threads -p "kvtracer.tracefile="${TRACE_DIR}"/"${AMT}"/"${WL}"-run" -p "kvtracer.totalthread="${threads}
-        done
+        ./bin/ycsb load kvtracer -P $WL_PATH -threads $threads -p "kvtracer.tracefile="${TRACE_DIR}"/ycsb/"${WL}"-load" -p "kvtracer.totalthread="${threads}
+        ./bin/ycsb run kvtracer -P $WL_PATH -threads $threads -p "kvtracer.tracefile="${TRACE_DIR}"/ycsb/"${WL}"-run" -p "kvtracer.totalthread="${threads}
     done
+    WL_PATH=${WORKLOAD_DIR}"_5m"
+    ./bin/ycsb load kvtracer -P $WL_PATH -threads $threads -p "kvtracer.tracefile="${TRACE_DIR}"/insert/load" -p "kvtracer.totalthread="${threads}
 done

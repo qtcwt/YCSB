@@ -100,7 +100,7 @@ public class KVTracerClient extends DB {
       final Map<String, ByteIterator> result) {
     try {
       if (fields == null) {
-        mOpWriter.write("GET|" + key + "\n");
+        mOpWriter.write("Read " + key + "\n");
       } else {
         throw new DBException("only support requests without fields");
       }
@@ -124,7 +124,7 @@ public class KVTracerClient extends DB {
       if(values.size() == 1) {
         for (Map.Entry<String, ByteIterator> entry : values.entrySet()) {
           String value = entry.getValue().toString();
-          mOpWriter.write("UPDATE|" + key + "|" + value + "\n");
+          mOpWriter.write("Update " + key + "\n");
         }
       } else {
         throw new DBException("only support requests without fields");
@@ -138,13 +138,26 @@ public class KVTracerClient extends DB {
 
   @Override
   public Status insert(final String table, final String key, final Map<String, ByteIterator> values) {
-    return update(table, key, values);
+    try {
+      if(values.size() == 1) {
+        for (Map.Entry<String, ByteIterator> entry : values.entrySet()) {
+          String value = entry.getValue().toString();
+          mOpWriter.write("Add " + key + "\n");
+        }
+      } else {
+        throw new DBException("only support requests without fields");
+      }
+      return Status.OK;
+    } catch (IOException | DBException exception) {
+      exception.printStackTrace();
+      return Status.ERROR;
+    }
   }
 
   @Override
   public Status delete(final String table, final String key) {
     try {
-      mOpWriter.write("DELETE|" + key + "\n");
+      mOpWriter.write("Remove " + key + "\n");
     } catch (IOException exception) {
       exception.printStackTrace();
       return Status.ERROR;

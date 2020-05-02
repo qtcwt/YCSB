@@ -4,10 +4,9 @@ mvn -pl kvtracer -am clean package
 TRACE_DIR="traces/"
 WORKLOAD_DIR="workloads/workload"
 WORKLOADS="a b"
-AMT="5m"
+AMT="1m"
 mkdir ${TRACE_DIR}
 mkdir ${TRACE_DIR}"/ycsb"
-mkdir ${TRACE_DIR}"/insert"
 for threads in 1 2 4 6 8 10 12 16 20 24 28 32 36 40
 do
     for WL in $WORKLOADS

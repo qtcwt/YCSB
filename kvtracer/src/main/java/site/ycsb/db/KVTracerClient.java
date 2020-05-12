@@ -124,7 +124,7 @@ public class KVTracerClient extends DB {
       if(values.size() == 1) {
         for (Map.Entry<String, ByteIterator> entry : values.entrySet()) {
           String value = entry.getValue().toString();
-          mOpWriter.write("Update " + key + " " + value + "\n");
+          mOpWriter.write("Update " + key + "\n");
         }
       } else {
         throw new DBException("only support requests without fields");
@@ -142,7 +142,7 @@ public class KVTracerClient extends DB {
       if(values.size() == 1) {
         for (Map.Entry<String, ByteIterator> entry : values.entrySet()) {
           String value = entry.getValue().toString();
-          mOpWriter.write("Add " + key + " " + value + "\n");
+          mOpWriter.write("Add " + key + "\n");
         }
       } else {
         throw new DBException("only support requests without fields");
